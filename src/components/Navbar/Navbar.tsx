@@ -1,11 +1,10 @@
-"use client"
 import React from 'react';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink, navigationMenuTriggerStyle } from "@/components/shadcn/navigation-menu";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetHeader} from "@/components/shadcn/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger, SheetHeader, SheetClose} from "@/components/shadcn/sheet";
 import { BarChart, Menu, Home, Search, Compass, LayoutDashboard } from "lucide-react";
 import Link from 'next/link';
 
-const Navbar = () => {
+const NavBar = () => {
   return (
     <nav className="flex items-center justify-between p-4 border-b">
       {/* Logo Section */}
@@ -27,7 +26,7 @@ const Navbar = () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link href="/" legacyBehavior passHref>
+              <Link href="/search?handle=bsky.app" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   <Search className="mr-2 h-4 w-4" /> Search
                 </NavigationMenuLink>
@@ -65,18 +64,26 @@ const Navbar = () => {
               <SheetTitle>Menu</SheetTitle>
             </SheetHeader>
             <div className="grid gap-4 py-4">
-              <Link href="/" className="flex items-center gap-2">
-                <Home className="h-5 w-5" /> Home
-              </Link>
-              <Link href="/" className="flex items-center gap-2">
-                <Search className="h-5 w-5" /> Search
-              </Link>
-              <Link href="/" className="flex items-center gap-2">
-                <Compass className="h-5 w-5" /> Discover
-              </Link>
-              <Link href="/" className="flex items-center gap-2">
-                <LayoutDashboard className="h-5 w-5" /> Dashboard
-              </Link>
+              <SheetClose asChild>
+                <Link href="/" className="flex items-center gap-2">
+                  <Home className="h-5 w-5" /> Home
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link href="/search" className="flex items-center gap-2">
+                  <Home className="h-5 w-5" /> Search
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link href="/" className="flex items-center gap-2">
+                  <Home className="h-5 w-5" /> Discover
+                </Link>
+              </SheetClose>
+              <SheetClose asChild>
+                <Link href="/" className="flex items-center gap-2">
+                  <Home className="h-5 w-5" /> Dashboard
+                </Link>
+              </SheetClose>
             </div>
           </SheetContent>
         </Sheet>
@@ -85,4 +92,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NavBar;
