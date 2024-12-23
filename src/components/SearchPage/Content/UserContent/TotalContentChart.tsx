@@ -123,6 +123,13 @@ export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsBy
               tickMargin={8}
               tickCount={5}
               width={40}
+              allowDecimals={false}
+              tickFormatter={(value) => {
+                return new Intl.NumberFormat("en-US", {
+                  notation: "compact",
+                  compactDisplay: "short"
+                }).format(value)
+              }}
             />
             <ChartTooltip
               cursor={false}

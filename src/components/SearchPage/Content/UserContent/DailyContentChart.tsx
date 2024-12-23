@@ -46,7 +46,7 @@ const chartConfig = {
 } satisfies ChartConfig
 
 
-export const RelativeContentChart = ({ contentStatsByDateOrdered, contentStatsByDate }: 
+export const DailyContentChart = ({ contentStatsByDateOrdered, contentStatsByDate }: 
 {   contentStatsByDateOrdered: IContentStats[]
     contentStatsByDate: Record<string, IContentStats>
 }) => {
@@ -69,7 +69,7 @@ export const RelativeContentChart = ({ contentStatsByDateOrdered, contentStatsBy
   ]
 
   const [selectedTypeLabel, setSelectedTypeLabel] = React.useState("all")
-  const [selectedTimeLabel, setSelectedTimeLabel] = React.useState("30d")
+  const [selectedTimeLabel, setSelectedTimeLabel] = React.useState("7d")
 
   const filterData = () => {
     let daysToSubtract = 7
