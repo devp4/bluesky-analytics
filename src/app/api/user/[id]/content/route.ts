@@ -5,10 +5,8 @@ type ContentStatsByDate = Record<string, IContentStats>
 type ContentStatsByDateOrdered = IContentStats[]
 type CumulativeStatsByDate = IContentStats[]
 
-const getCumulativeStatsByDate = (contentStatsByDate: ContentStatsByDate): CumulativeStatsByDate => {
+const getCumulativeStatsByDate = (contentStatsByDate: ContentStatsByDate, sortedDates: string[]): CumulativeStatsByDate => {
   const cumulativeStatsByDate: CumulativeStatsByDate = [];
-
-  const sortedDates = Object.keys(contentStatsByDate).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
 
   let cumulativePosts = 0;
   let cumulativeReplies = 0;
@@ -35,10 +33,9 @@ const getCumulativeStatsByDate = (contentStatsByDate: ContentStatsByDate): Cumul
   return cumulativeStatsByDate;
 };
 
-const getContentStatsByDateOrdered = (contentStatsByDate: ContentStatsByDate): ContentStatsByDateOrdered => {
+const getContentStatsByDateOrdered = (contentStatsByDate: ContentStatsByDate, sortedDates: string[]): ContentStatsByDateOrdered => {
   const contentStatsByDateOrdered: ContentStatsByDateOrdered = [];
 
-  const sortedDates = Object.keys(contentStatsByDate).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
   for (const date of sortedDates) {
     contentStatsByDateOrdered.push(contentStatsByDate[date])
   }
@@ -141,8 +138,11 @@ export async function GET(
 
   const id = (await params).id;
   const { contentStatsByDate, status } = await getUserContentStats(id);
-  const cumulativeStatsByDate = getCumulativeStatsByDate(contentStatsByDate)
-  const contentStatsByDateOrdered = getContentStatsByDateOrdered(contentStatsByDate)
+
+  const sortedDates = Object.keys(contentStatsByDate).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+
+  const cumulativeStatsByDate = getCumulativeStatsByDate(contentStatsByDate, sortedDates)
+  const contentStatsByDateOrdered = getContentStatsByDateOrdered(contentStatsByDate, sortedDates)
 
   const data = {
     contentStatsByDate: contentStatsByDate,

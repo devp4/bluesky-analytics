@@ -99,6 +99,7 @@ export const RelativeContentChart = ({ contentStatsByDateOrdered, contentStatsBy
     }
 
     const arr: IContentStats[] = [];
+    
     for(const dt=new Date(startDate); dt<=new Date(endDate); dt.setDate(dt.getDate()+1)){
       const newDate = new Date(dt).toDateString()
       if (newDate in contentStatsByDate) {
