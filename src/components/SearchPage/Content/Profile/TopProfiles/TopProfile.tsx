@@ -1,39 +1,36 @@
+"use client"
 import React from 'react'
 import { Button } from "@/components/shadcn/button";
 import { Card, CardTitle, CardContent } from '@/components/shadcn/card';
 import { Avatar, AvatarImage } from '@/components/shadcn/avatar';
 import Image from 'next/image';
-import { ExternalLinkIcon } from 'lucide-react';
+import { useQueryState } from 'nuqs';
 
-interface ProfileCard {
-  handle: string,
+export const TopProfile = ({ profile }: {profile: {
   displayName: string,
+  handle: string,
   avatar: string,
-  description: string | undefined,
-  createdAt: string,
-  banner: string | undefined
-}
+  banner: string
+}}) => {
 
-export const ProfileCard = ({ profileCard }: {profileCard: ProfileCard}) => {
-  if (profileCard.description === undefined) {
-    profileCard.description = ""
+  if (profile.displayName === "" || profile.displayName === undefined) {
+    profile.displayName = profile.handle
   }
 
-  if (profileCard.displayName === "" || profileCard.displayName === undefined) {
-    profileCard.displayName = profileCard.handle
-  }
+  const [handle, setHandle] = useQueryState("handle", { shallow: false, history: "push", scroll: true });
 
   return (
     <div className="w-full">
       <Card className="rounded-lg shadow-md overflow-hidden">
         {/* Banner Section */}
         <div className="relative w-full h-32">
-          {profileCard.banner ? 
+          {profile.banner ? 
             <Image
-              src={profileCard.banner}
+              src={profile.banner}
               alt="Banner Image"
               fill={true}
               className="w-full h-full object-cover"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             /> :
             
             <div className="w-full h-full bg-[rgb(30,41,54)]"></div>
@@ -44,7 +41,7 @@ export const ProfileCard = ({ profileCard }: {profileCard: ProfileCard}) => {
         <div className="flex items-center px-6 -mt-12 gap-6">
           {/* Avatar */}
           <Avatar className="w-24 h-24 border-4 rounded-full">
-            <AvatarImage src={profileCard.avatar}></AvatarImage>
+            <AvatarImage src={profile.avatar}></AvatarImage>
           </Avatar>
 
           {/* User Info */}
@@ -54,16 +51,15 @@ export const ProfileCard = ({ profileCard }: {profileCard: ProfileCard}) => {
         <CardContent className="mt-3 px-6 pb-6">
           <div>
             <CardTitle className="text-xl font-bold truncate ...">
-              {`${profileCard.displayName} | @${profileCard.handle}`}
+              {`${profile.displayName} | @${profile.handle}`}
             </CardTitle>
           </div>
-          <p className="mt-2 whitespace-pre-line">
-            {profileCard.description}
-          </p>
           <div className="flex justify-end mt-5">
-            <Button className="rounded-full h-9">
-              <a href={`https://bsky.app/profile/${profileCard.handle}`}>Visit</a>
-              <ExternalLinkIcon></ExternalLinkIcon>
+            <Button 
+              className="rounded-full h-9"
+              onClick={() => setHandle(profile.handle)}
+            >
+              Try
             </Button>
           </div>
         </CardContent>

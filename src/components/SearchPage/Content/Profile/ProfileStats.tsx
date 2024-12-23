@@ -1,12 +1,6 @@
 import React from 'react'
 import { Card, CardTitle, CardDescription } from '@/components/shadcn/card';
-
-interface ProfileStats {
-  followersCount: string,
-  followsCount: string,
-  postsCount: string
-  createdAt: string,
-}
+import { IProfile } from '@/interfaces/IProfile';
 
 function getAge(createdAt: string): string {
   const now = new Date(); // Get the current date
@@ -31,29 +25,29 @@ function getAge(createdAt: string): string {
   return `${years}Y ${months}M ${days}D`;
 }
 
-export const ProfileStats = ({ profileStats }: {profileStats: ProfileStats}) => {
+export const ProfileStats = ({ profile }: {profile: IProfile}) => {
   return (
     <Card className="w-full p-4 rounded-md">
       <div className="flex flex-wrap justify-around gap-4 sm:gap-8">
         {/* Followers */}
         <div className="flex-1 min-w-[120px] grid gap-1 text-center">
           <CardDescription>Followers</CardDescription>
-          <CardTitle>{profileStats.followersCount.toLocaleString()}</CardTitle>
+          <CardTitle>{profile.followersCount.toLocaleString()}</CardTitle>
         </div>
         {/* Following */}
         <div className="flex-1 min-w-[120px] grid gap-1 text-center">
           <CardDescription>Following</CardDescription>
-          <CardTitle>{profileStats.followsCount.toLocaleString()}</CardTitle>
+          <CardTitle>{profile.followsCount.toLocaleString()}</CardTitle>
         </div>
         {/* Posts */}
         <div className="flex-1 min-w-[120px] grid gap-1 text-center">
           <CardDescription>Content</CardDescription>
-          <CardTitle>{profileStats.postsCount.toLocaleString()}</CardTitle>
+          <CardTitle>{profile.postsCount.toLocaleString()}</CardTitle>
         </div>
         {/* Account Age */}
         <div className="flex-1 min-w-[120px] grid gap-1 text-center">
           <CardDescription>Account Age</CardDescription>
-          <CardTitle className="truncate">{getAge(profileStats.createdAt)}</CardTitle>
+          <CardTitle className="truncate">{getAge(profile.createdAt)}</CardTitle>
         </div>
       </div>
     </Card>

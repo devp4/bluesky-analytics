@@ -24,16 +24,16 @@ import {
   SelectValue,
 } from "@/components/shadcn/select"
 
-import { ContentStats } from "@/interfaces/IUserContent"
+import { IContentStats } from "@/interfaces/IUserContent"
 
 const chartConfig = {
-  replies: {
-    label: "Replies",
-    color: "hsl(var(--chart-1))",
-  },
   posts: {
     label: "Posts",
     color: "hsl(var(--chart-5))",
+  },
+  replies: {
+    label: "Replies",
+    color: "hsl(var(--chart-1))",
   },
   reposts: {
     label: "Reposts",
@@ -45,7 +45,7 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsByDate: ContentStats[] }) => {
+export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsByDate: IContentStats[] }) => {
 
   const selectLabels = [
     { value: "all", label: "All" },
@@ -64,8 +64,8 @@ export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsBy
       {/* Top Label */}
       <CardHeader className="flex-row justify-between gap-2 space-y-0 border-b py-5 sm:flex-row items-center">
         <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Cumulative</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-left">Cumulative</CardTitle>
+          <CardDescription className="text-left">
             Showing cumulative content over time
           </CardDescription>
         </div>
@@ -122,7 +122,7 @@ export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsBy
               axisLine={false}
               tickMargin={8}
               tickCount={5}
-              width={30}
+              width={40}
             />
             <ChartTooltip
               cursor={false}
@@ -135,7 +135,7 @@ export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsBy
                   <Line 
                     key={contentType} 
                     dataKey={contentType} 
-                    type="natural" 
+                    type="linear" 
                     stroke={chartItem.color}
                     strokeWidth={2}
                     dot={false}
@@ -149,120 +149,3 @@ export const TotalContentChart = ({ cumulativeStatsByDate }: { cumulativeStatsBy
     </Card>
   )
 }
-
-
-// <AreaChart data={filteredData}>
-// <defs>
-//   <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-//     <stop
-//       offset="5%"
-//       stopColor="var(--color-desktop)"
-//       stopOpacity={0.8}
-//     />
-//     <stop
-//       offset="95%"
-//       stopColor="var(--color-desktop)"
-//       stopOpacity={0.1}
-//     />
-//   </linearGradient>
-//   <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-//     <stop
-//       offset="5%"
-//       stopColor="var(--color-mobile)"
-//       stopOpacity={0.8}
-//     />
-//     <stop
-//       offset="95%"
-//       stopColor="var(--color-mobile)"
-//       stopOpacity={0.1}
-//     />
-//   </linearGradient>
-// </defs>
-// <CartesianGrid vertical={false} />
-// <XAxis
-//   dataKey="date"
-//   tickLine={false}
-//   axisLine={false}
-//   tickMargin={8}
-//   minTickGap={32}
-//   tickFormatter={(value) => {
-//     const date = new Date(value)
-//     return date.toLocaleDateString("en-US", {
-//       month: "short",
-//       day: "numeric",
-//     })
-//   }}
-// />
-// <YAxis
-//   tickLine={false}
-//   axisLine={false}
-//   tickMargin={8}
-//   tickCount={5}
-//   width={40}
-// />
-// <ChartTooltip
-//   cursor={false}
-//   content={(
-//     <ChartTooltipContent
-//       labelFormatter={(value) => {
-//         return new Date(value).toLocaleDateString("en-US", {
-//           month: "short",
-//           day: "numeric",
-//         })
-//       }}
-//       indicator="dot"
-//     />
-//   )}
-// />
-// <Area
-//   dataKey="mobile"
-//   type="natural"
-//   fill="url(#fillMobile)"
-//   stroke="var(--color-mobile)"
-//   stackId="a"
-// />
-// <Area
-//   dataKey="desktop"
-//   type="natural"
-//   fill="url(#fillDesktop)"
-//   stroke="var(--color-desktop)"
-//   stackId="a"
-// />
-// </AreaChart>
-
-// export function Component() {
-//   return (
-//         <ChartContainer config={chartConfig}>
-//           <LineChart
-//             accessibilityLayer
-//             data={chartData}
-//             margin={{
-//               left: 12,
-//               right: 12,
-//             }}
-//           >
-//             <CartesianGrid vertical={false} />
-//             <XAxis
-//               dataKey="month"
-//               tickLine={false}
-//               axisLine={false}
-//               tickMargin={8}
-//               tickFormatter={(value) => value.slice(0, 3)}
-//             />
-//             <ChartTooltip
-//               cursor={false}
-//               content={<ChartTooltipContent hideLabel />}
-//             />
-//             <Line
-//               dataKey="desktop"
-//               type="natural"
-//               stroke="var(--color-desktop)"
-//               strokeWidth={2}
-//               dot={false}
-//             />
-//           </LineChart>
-//         </ChartContainer>
-
-//   )
-// }
-

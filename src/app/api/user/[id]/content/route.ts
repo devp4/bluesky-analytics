@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { FeedResponse, ContentStats } from '@/interfaces/IUserContent';
+import { IFeedResponse, IContentStats } from '@/interfaces/IUserContent';
 
-type ContentStatsByDate = Record<string, ContentStats>;
-type CumulativeStatsByDate = ContentStats[]
+type ContentStatsByDate = Record<string, IContentStats>
+type ContentStatsByDateOrdered = IContentStats[]
+type CumulativeStatsByDate = IContentStats[]
 
 const getCumulativeStatsByDate = (contentStatsByDate: ContentStatsByDate): CumulativeStatsByDate => {
   const cumulativeStatsByDate: CumulativeStatsByDate = [];
@@ -34,6 +35,17 @@ const getCumulativeStatsByDate = (contentStatsByDate: ContentStatsByDate): Cumul
   return cumulativeStatsByDate;
 };
 
+const getContentStatsByDateOrdered = (contentStatsByDate: ContentStatsByDate): ContentStatsByDateOrdered => {
+  const contentStatsByDateOrdered: ContentStatsByDateOrdered = [];
+
+  const sortedDates = Object.keys(contentStatsByDate).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  for (const date of sortedDates) {
+    contentStatsByDateOrdered.push(contentStatsByDate[date])
+  }
+
+  return contentStatsByDateOrdered
+}
+
 const getUserContentStats = async (did: string): Promise<{
   contentStatsByDate: ContentStatsByDate;
   status: number
@@ -57,7 +69,7 @@ const getUserContentStats = async (did: string): Promise<{
       break
     }
 
-    const data: FeedResponse = await response.json();
+    const data: IFeedResponse = await response.json();
 
     // Posts in the feed
     for (const postEntry of data.feed || []) {
@@ -72,7 +84,7 @@ const getUserContentStats = async (did: string): Promise<{
           const postDate = new Date(stringDate).toDateString()
 
           if (!contentStatsByDate[postDate]) {
-            contentStatsByDate[postDate] = { posts: 0, replies: 0, quotes: 0, reposts: 0 };
+            contentStatsByDate[postDate] = { date: postDate, posts: 0, replies: 0, quotes: 0, reposts: 0 };
           }
 
           contentStatsByDate[postDate].reposts += 1;
@@ -91,7 +103,7 @@ const getUserContentStats = async (did: string): Promise<{
       const postDate = new Date(stringDate).toDateString()
 
       if (!contentStatsByDate[postDate]) {
-        contentStatsByDate[postDate] = { posts: 0, replies: 0, quotes: 0, reposts: 0 };
+        contentStatsByDate[postDate] = { date: postDate, posts: 0, replies: 0, quotes: 0, reposts: 0 };
       }
 
       const embed = post?.embed;
@@ -130,9 +142,11 @@ export async function GET(
   const id = (await params).id;
   const { contentStatsByDate, status } = await getUserContentStats(id);
   const cumulativeStatsByDate = getCumulativeStatsByDate(contentStatsByDate)
+  const contentStatsByDateOrdered = getContentStatsByDateOrdered(contentStatsByDate)
 
   const data = {
     contentStatsByDate: contentStatsByDate,
+    contentStatsByDateOrdered: contentStatsByDateOrdered,
     cumulativeStatsByDate: cumulativeStatsByDate
   }
 

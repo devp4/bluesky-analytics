@@ -1,17 +1,13 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Input } from '../shadcn/input';
-import { Button } from '../shadcn/button';
+import { Input } from '../../shadcn/input';
+import { Button } from '../../shadcn/button';
 import { useQueryState } from 'nuqs'
 
 const SearchBar = ({ currentHandle }: { currentHandle: string }) => {
   const [input, setInput] = useState(currentHandle);
-  const [handle, setHandle] = useQueryState("handle", { shallow: false });
-
-  if (handle) {
-    
-  }
+  const [handle, setHandle] = useQueryState("handle", { shallow: false, history: "push"});
 
   // Form submit handler
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -40,6 +36,7 @@ const SearchBar = ({ currentHandle }: { currentHandle: string }) => {
             placeholder="handle.bsky.social"
             className="flex-grow"
             value={input}
+            autoComplete="off"
             onChange={e => setInput(e.target.value)} // Bind the input value to state
           />
           <Button type="submit" className="rounded-full h-8">Search</Button>

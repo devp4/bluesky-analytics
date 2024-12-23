@@ -1,16 +1,18 @@
 import React from 'react';
 import { TotalContentStats } from './TotalContentStats';
 import { TotalContentChart } from './TotalContentChart';
-import { ContentStats } from '@/interfaces/IUserContent';
+import { IContentStats } from '@/interfaces/IUserContent';
+import { RelativeContentChart } from './RelativeContentChart';
 
 interface UserContent {
-  contentStatsByDate: Record<string, ContentStats>,
-  cumulativeStatsByDate: ContentStats[]
+  contentStatsByDate: Record<string, IContentStats>
+  contentStatsByDateOrdered: IContentStats[]
+  cumulativeStatsByDate: IContentStats[]
 }
 
 const getUserContent = async (did: string) => {
   const getUserContentURL = process.env.URL + '/api/user/' + did + "/content"
-  const getUserContentResponse = await fetch(getUserContentURL)
+  const getUserContentResponse = await fetch(getUserContentURL, {next: {revalidate: 3600}})
 
   const userContent: UserContent = await getUserContentResponse.json()
   return userContent
@@ -18,9 +20,11 @@ const getUserContent = async (did: string) => {
 
 export const UserContent = async ({ did }: {did: string}) => {
   const userContent = await getUserContent(did)
-  // const contentStatsByDate = userContent.contentStatsByDate
   const cumulativeStatsByDate = userContent.cumulativeStatsByDate
   const totalStats = cumulativeStatsByDate[cumulativeStatsByDate.length - 1]
+  
+  const contentStatsByDateOrdered = userContent.contentStatsByDateOrdered
+  const contentStatsByDate = userContent.contentStatsByDate
 
   return (
     <div>
@@ -32,8 +36,17 @@ export const UserContent = async ({ did }: {did: string}) => {
       </div>
 
       {/* Chart Section */}
+      <div className="w-full mb-8">
+        <TotalContentChart 
+          cumulativeStatsByDate={cumulativeStatsByDate}/>
+      </div>
+
+      {/* Relative Content */}
       <div className="w-full">
-        <TotalContentChart cumulativeStatsByDate={cumulativeStatsByDate}/>
+        <RelativeContentChart 
+          contentStatsByDateOrdered={contentStatsByDateOrdered}
+          contentStatsByDate={contentStatsByDate}
+        />
       </div>
     </div>
   );

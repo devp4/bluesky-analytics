@@ -26,7 +26,7 @@ const NavBar = () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
-              <Link href="/search?handle=bsky.app" legacyBehavior passHref>
+              <Link href="/search" legacyBehavior passHref>
                 <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                   <Search className="mr-2 h-4 w-4" /> Search
                 </NavigationMenuLink>

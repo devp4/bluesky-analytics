@@ -1,4 +1,4 @@
-interface PostEntry {
+interface IPostEntry {
   post?: {
     record?: {
       createdAt?: string;
@@ -16,13 +16,13 @@ interface PostEntry {
   reply?: Record<string, unknown>;
 }
 
-export interface FeedResponse {
-  feed?: PostEntry[];
+export interface IFeedResponse {
+  feed?: IPostEntry[];
   cursor?: string;
 }
 
-export interface ContentStats {
-  date?: string;
+export interface IContentStats {
+  date: string;
   posts: number;
   replies: number;
   quotes: number;

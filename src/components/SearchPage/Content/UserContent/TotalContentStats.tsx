@@ -1,8 +1,8 @@
 import React from 'react';
 import { Card, CardDescription, CardTitle } from '@/components/shadcn/card';
-import { ContentStats } from '@/interfaces/IUserContent';
+import { IContentStats } from '@/interfaces/IUserContent';
 
-export const TotalContentStats = ({ totalContentStats }: { totalContentStats: ContentStats}) => {
+export const TotalContentStats = ({ totalContentStats }: { totalContentStats: IContentStats}) => {
   return (
     <Card className="w-full p-4 rounded-md">
       <div className="flex flex-wrap justify-around gap-4 sm:gap-8">
