@@ -14,12 +14,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/shadcn/chart"
-import { IContentStats } from "@/interfaces/IUserContent"
+import { IEngangementStats } from "@/interfaces/IUserContent"
 
 
 const chartConfig = {
-  posts: {
-    label: "Posts",
+  likes: {
+    label: "Likes",
     color: "hsl(var(--chart-5))",
   },
   replies: {
@@ -36,8 +36,8 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function ContentByDay({ daysData }: {
-  daysData: IContentStats[]
+export function EngagementByDay({ daysData }: {
+  daysData: IEngangementStats[]
 }) {
 
   const dayConverter = [
@@ -50,7 +50,7 @@ export function ContentByDay({ daysData }: {
     "Saturday"
   ]
 
-  const convertToChartData = (): IContentStats[] => {
+  const convertToChartData = (): IEngangementStats[] => {
     const chartData = []
     for (let i = 0; i < daysData.length; i++) {
       const chart = {
@@ -71,7 +71,7 @@ export function ContentByDay({ daysData }: {
     let maxSum = -1
     for (let i = 0; i < chartData.length; i++) {
       const data = chartData[i]
-      const sum = data.posts + data.replies + data.quotes + data.reposts
+      const sum = data.likes + data.replies + data.quotes + data.reposts
       if (sum > maxSum) {
         maxSum = sum
         mostDay = dayConverter[i]
@@ -114,8 +114,8 @@ export function ContentByDay({ daysData }: {
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
-              dataKey="posts"
-              fill={chartConfig.posts.color}
+              dataKey="likes"
+              fill={chartConfig.likes.color}
               radius={[4, 4, 0, 0]}
             />
             <Bar
@@ -138,7 +138,7 @@ export function ContentByDay({ daysData }: {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          {`Highest content activity day is ${getMostContentDay()}`}
+          {`Highest engagement activity day is ${getMostContentDay()}`}
         </div>
       </CardFooter>
     </Card>

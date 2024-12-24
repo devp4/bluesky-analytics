@@ -14,12 +14,12 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/shadcn/chart"
-import { IContentStats } from "@/interfaces/IUserContent"
+import { IEngangementStats } from "@/interfaces/IUserContent"
 
 
 const chartConfig = {
-  posts: {
-    label: "Posts",
+  likes: {
+    label: "Likes",
     color: "hsl(var(--chart-5))",
   },
   replies: {
@@ -36,26 +36,32 @@ const chartConfig = {
   }
 } satisfies ChartConfig
 
-export function ContentByDay({ daysData }: {
-  daysData: IContentStats[]
+export function EngagementByMonth({ monthsData }: {
+  monthsData: IEngangementStats[]
 }) {
 
-  const dayConverter = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ]
+  const monthConverter = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+  
 
-  const convertToChartData = (): IContentStats[] => {
+  const convertToChartData = (): IEngangementStats[] => {
     const chartData = []
-    for (let i = 0; i < daysData.length; i++) {
+    for (let i = 0; i < monthsData.length; i++) {
       const chart = {
-        "day": dayConverter[i],
-        ...daysData[i]
+        "month": monthConverter[i],
+        ...monthsData[i]
       }
 
       chartData.push(chart)
@@ -66,33 +72,33 @@ export function ContentByDay({ daysData }: {
 
   const chartData = convertToChartData()
 
-  const getMostContentDay = () => {
-    let mostDay = "Sunday"
+  const getMostContentMonth = () => {
+    let mostMonth = "January"
     let maxSum = -1
     for (let i = 0; i < chartData.length; i++) {
       const data = chartData[i]
-      const sum = data.posts + data.replies + data.quotes + data.reposts
+      const sum = data.likes + data.replies + data.quotes + data.reposts
       if (sum > maxSum) {
         maxSum = sum
-        mostDay = dayConverter[i]
+        mostMonth = monthConverter[i]
       }
     }
 
-    return mostDay
+    return mostMonth
   }
   
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Content by Day</CardTitle>
+        <CardTitle>Engagement by Month</CardTitle>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="day"
+              dataKey="month"
               tickLine={false}
               tickMargin={10}
               axisLine={false}
@@ -114,8 +120,8 @@ export function ContentByDay({ daysData }: {
             />
             <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
-              dataKey="posts"
-              fill={chartConfig.posts.color}
+              dataKey="likes"
+              fill={chartConfig.likes.color}
               radius={[4, 4, 0, 0]}
             />
             <Bar
@@ -138,7 +144,7 @@ export function ContentByDay({ daysData }: {
       </CardContent>
       <CardFooter className="flex-col items-start gap-2 text-sm">
         <div className="flex gap-2 font-medium leading-none">
-          {`Highest content activity day is ${getMostContentDay()}`}
+          {`Highest engagement activity month is ${getMostContentMonth()}`}
         </div>
       </CardFooter>
     </Card>

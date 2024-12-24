@@ -8,6 +8,10 @@ interface IPostEntry {
         uri?: string;
       };
     };
+    likeCount: number,
+    replyCount: number,
+    quoteCount: number,
+    repostCount: number
   };
   reason?: {
     $type?: string;
@@ -24,6 +28,14 @@ export interface IFeedResponse {
 export interface IContentStats {
   date: string;
   posts: number;
+  replies: number;
+  quotes: number;
+  reposts: number;
+}
+
+export interface IEngangementStats {
+  date: string;
+  likes: number;
   replies: number;
   quotes: number;
   reposts: number;

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Profile } from './Profile/Profile'
-import { UserContent } from './UserContent/UserContent'
+import { Stats } from './Stats'
 
 interface Account {
   did: string
@@ -26,7 +26,7 @@ export const Content = async ({ handle }: {handle: string}) => {
           status === 200 ? 
           <>
             <Profile did={account.did}/>
-            <UserContent did={account.did}/>
+            <Stats did={account.did}/>
           </> :
           <div>
             Not Found

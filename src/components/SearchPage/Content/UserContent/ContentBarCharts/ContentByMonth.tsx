@@ -118,7 +118,7 @@ export function ContentByMonth({ monthsData }: {
                 }).format(value)
               }}
             />
-            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
+            <ChartTooltip content={<ChartTooltipContent />} />
             <Bar
               dataKey="posts"
               fill={chartConfig.posts.color}
